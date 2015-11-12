@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import mock
+import re
 import unittest
 
 from wok import config
@@ -45,3 +46,13 @@ class DASDPartitionsTests(unittest.TestCase):
         parts.create(params)
         mock_create_part.return_value = 'dasdb'
         mock_create_part.assert_called_with(dev, size)
+
+    @mock.patch('wok.plugins.ginger.models.dasd_utils._delete_dasd_part', autospec=True)
+    def test_delete_part(self, mock_delete_part):
+        part = partitions.DASDPartitionModel()
+        part_name = 'dasdb2'
+        name_split = re.split('(\D+)', part_name, flags=re.IGNORECASE)
+        dev_name = name_split[1]
+        part_num = name_split[2]
+        part.delete(part_name)
+        mock_delete_part.assert_called_with(dev_name, part_num)
