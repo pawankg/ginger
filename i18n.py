@@ -124,5 +124,27 @@ messages = {
     "GINFS00012E": _("Unable to open fstab"),
     "GINFS00013E": _("Unable to write fstab"),
     "GINFS00014E": _("value needs to be a boolean"),
-    "GINFS00015E": _("Failed to retrieve list of filesystems.")
+    "GINFS00015E": _("Failed to retrieve list of filesystems."),
+
+    "GINDASD0001E": _("Error in executing 'lsdasd -l' command"),
+    "GINDASD0002E": _("Error in executing 'lsdasd -l bus_id' command"),
+    "GINDASD0003E": _("Parsing lsdasd output failed"),
+    "GINDASD0004E": _("Formatting of DASD device failed"),
+    "GINDASD0005E": _("Failed to retrieve list of DASD devices"),
+    "GINDASD0006E": _("Failed to retrieve details of the specified DASD device"),
+    "GINDASD0007E": _("Failed to find specified DASD device"),
+    "GINDASD0008E": _("Failed to format DASD device"),
+    "GINDASD0009E": _("Require DASD device name to be formatted"),
+    "GINDASD0010E": _("Require block size for formatting DASD device"),
+
+    "GINDASDPAR0001E": _("Error in executing 'lsblk -Pbo' command"),
+    "GINDASDPAR0002E": _("Error while getting block device information"),
+    "GINDASDPAR0003E": _("Creation of DASD partition failed"),
+    "GINDASDPAR0004E": _("Deletion of DASD partition failed"),
+    "GINDASDPAR0005E": _("Require name to create DASD device partition"),
+    "GINDASDPAR0006E": _("Require partition size to create DASD device partition"),
+    "GINDASDPAR0007E": _("Failed to create partition"),
+    "GINDASDPAR0008E": _("Failed to retrieve list of DASD partitions"),
+    "GINDASDPAR0009E": _("Failed to retrieve details of the specified DASD partition"),
+    "GINDASDPAR0010E": _("Failed to delete partition")
 }
