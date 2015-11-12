@@ -21,17 +21,11 @@ import mock
 import re
 import unittest
 
-from wok import config
-from wok.objectstore import ObjectStore
-
 import wok.plugins.ginger.models.dasdpartitions as partitions
+from wok.plugins.ginger.models.dasd_utils import _parse_lsblk_output
 
 
 class DASDPartitionsTests(unittest.TestCase):
-    def setUp(self):
-        objstore_loc = config.get_object_store() + '_ginger'
-        self._objstore = ObjectStore(objstore_loc)
-
     def test_get_list(self):
         dasd_partitions = partitions.DASDPartitionsModel()
         dasd_part_list = dasd_partitions.get_list()
@@ -56,3 +50,23 @@ class DASDPartitionsTests(unittest.TestCase):
         part_num = name_split[2]
         part.delete(part_name)
         mock_delete_part.assert_called_with(dev_name, part_num)
+
+    def test_lsblk_parser(self):
+        lsblk_out = """NAME="dasda" TYPE="disk" FSTYPE="" MOUNTPOINT="" MAJ:MIN="94:0"
+NAME="dasda1" TYPE="part" FSTYPE="ext3" MOUNTPOINT="/" MAJ:MIN="94:1"
+NAME="dasdb" TYPE="disk" FSTYPE="" MOUNTPOINT="" MAJ:MIN="94:4"
+NAME="dasdb1" TYPE="part" FSTYPE="" MOUNTPOINT="" MAJ:MIN="94:5"
+NAME="dasdb2" TYPE="part" FSTYPE="" MOUNTPOINT="" MAJ:MIN="94:6"
+NAME="dasdc" TYPE="disk" FSTYPE="" MOUNTPOINT="" MAJ:MIN="94:8"
+
+"""
+        keys = ["NAME", "TYPE", "FSTYPE", "MOUNTPOINT", "MAJ:MIN"]
+        parse_out = _parse_lsblk_output(lsblk_out, keys)
+        if parse_out[0]['name'] != 'dasda':
+            self.fail("Parsing of lsblk failed : name")
+        if parse_out[0]['type'] != 'disk':
+            self.fail("Parsing of lsblk failed : type")
+        if parse_out[0]['mountpoint'] != '':
+            self.fail("Parsing of lsblk failed : mountpoint")
+        if parse_out[0]['fstype'] != '':
+            self.fail("Parsing of lsblk failed : fstype")
